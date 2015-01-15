@@ -1,5 +1,6 @@
 *.idea
 *.lib/*
+lib/*
 
 # Windows image file caches
 Thumbs.db
