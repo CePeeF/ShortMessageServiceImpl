@@ -6,7 +6,7 @@ import javax.persistence.*;
 /**
  * Created by meichris on 15.01.15.
  */
-public class User {
+public class UserE {
 
     @Id
     private String name;
@@ -15,19 +15,17 @@ public class User {
     private String city;
 
     @OneToMany(mappedBy = "userTopic", cascade = CascadeType.ALL)
-    private Set<Topic> topics;
+    private Set<TopicE> topics;
 
     @OneToMany(mappedBy = "userMessage", cascade = CascadeType.ALL)
-    private Set<Message> messages;
+    private Set<MessageE> messages;
 
-    private User() {}
-
-    public User(String username, String city) {
-        this.name = username;
+    public UserE(String userName, String city) {
+        this.name = userName;
         this.city = city;
     }
 
-    public String getUsername() {
+    public String getName() {
         return name;
     }
 
@@ -54,7 +52,7 @@ public class User {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        User other = (User) obj;
+        UserE other = (UserE) obj;
         if (name == null) {
             if (other.name != null) {
                 return false;

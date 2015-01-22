@@ -1,0 +1,13 @@
+de/htw_berlin/aStudent/model/User.class
+de/htw_berlin/aStudent/repository/TopicRepoImpl.class
+de/htw_berlin/f4/ai/kbe/kurznachrichten/ShortMessageServiceImpl.class
+de/htw_berlin/aStudent/repository/UserRepoImpl.class
+de/htw_berlin/aStudent/repository/MessageRepoImpl.class
+de/htw_berlin/aStudent/service/AnApplicationService.class
+de/htw_berlin/aStudent/model/Message.class
+de/htw_berlin/aStudent/model/Topic.class
+de/htw_berlin/aStudent/service/TopicServiceImpl.class
+de/htw_berlin/aStudent/service/MessageServiceImpl.class
+de/htw_berlin/aStudent/service/AnApplicationServiceImpl.class
+de/htw_berlin/f4/ai/kbe/appconfig/AppConfig.class
+de/htw_berlin/aStudent/service/UserServiceImpl.class

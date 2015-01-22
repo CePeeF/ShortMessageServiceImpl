@@ -6,7 +6,7 @@ import javax.persistence.*;
 /**
  * Created by meichris on 15.01.15.
  */
-public class Topic {
+public class TopicE {
 
     @Id
     @GeneratedValue
@@ -17,27 +17,24 @@ public class Topic {
 
     @ManyToOne
     @JoinColumn(name = "userTopic")
-    private User userTopic;
+    private UserE userFromTopic;
 
     @OneToMany(mappedBy = "topicMessage", cascade = CascadeType.ALL)
-    private Set<Message> messages;
+    private Set<MessageE> messages;
 
-    private Topic() {}
-
-    public Topic(String topic, User user) {
+    public TopicE(String topic, UserE user) {
         this.topicName = topic;
-        this.userTopic = user;
+        this.userFromTopic = user;
     }
 
     public Long getTopicId() {
         return topicId;
     }
-    public String getTopic() {
+    public String getTopicName() {
         return topicName;
     }
-
-    public User getUser() {
-        return userTopic;
+    public UserE getUser() {
+        return userFromTopic;
     }
 
     @Override
@@ -59,7 +56,7 @@ public class Topic {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        Topic other = (Topic) obj;
+        TopicE other = (TopicE) obj;
         if (topicId == null) {
             if (other.topicId != null) {
                 return false;

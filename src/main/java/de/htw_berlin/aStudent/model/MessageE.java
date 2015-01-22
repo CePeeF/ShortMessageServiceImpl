@@ -1,7 +1,6 @@
 package de.htw_berlin.aStudent.model;
 
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 import javax.persistence.*;
@@ -10,7 +9,7 @@ import javax.persistence.*;
  * Created by meichris on 15.01.15.
  */
 @Entity
-public class Message implements Serializable{
+public class MessageE {
 
     public static final String QUERY_FETCH_ALL = "Message.fetchAll";
 
@@ -29,25 +28,34 @@ public class Message implements Serializable{
 
     @ManyToOne
     @JoinColumn(name = "userMessage")
-    private User userMessage;
+    private UserE userMessage;
 
     @ManyToOne
     @JoinColumn(name = "topicMessage")
-    private Topic topicMessage;
+    private TopicE topicMessage;
 
     @ManyToOne
     @JoinColumn(name = "predecessor")
-    private Message predecessor;
+    private MessageE predecessor;
 
     @OneToMany(mappedBy = "predecessor", cascade = CascadeType.ALL)
-    private Set<Message> responds;
+    private Set<MessageE> responds;
 
 
-    public Message(String content, User user, Topic topic, Boolean origin, Message predecessor) {
+    public MessageE(UserE user, String content, TopicE topic) {
         this.content = content;
         this.userMessage = user;
         this.topicMessage = topic;
-        this.origin = origin;
+        this.origin = true;
+        this.predecessor = null;
+        this.date = new Date();
+    }
+
+    public MessageE(UserE user, String content,TopicE topic, MessageE predecessor) {
+        this.content = content;
+        this.userMessage = user;
+        this.topicMessage = topic;
+        this.origin = false;
         this.predecessor = predecessor;
         this.date = new Date();
     }
@@ -60,11 +68,11 @@ public class Message implements Serializable{
         return origin;
     }
 
-    public User getUser() {
+    public UserE getUser() {
         return userMessage;
     }
 
-    public Topic getTopic() {
+    public TopicE getTopic() {
         return topicMessage;
     }
 
@@ -96,7 +104,7 @@ public class Message implements Serializable{
         if (getClass() != obj.getClass()) {
             return false;
         }
-        Message other = (Message) obj;
+        MessageE other = (MessageE) obj;
         if (messageId == null) {
             if (other.messageId != null) {
                 return false;
@@ -106,8 +114,6 @@ public class Message implements Serializable{
         }
         return true;
     }
-
-
 
 }
 
