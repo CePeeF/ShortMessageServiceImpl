@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import de.htw_berlin.aStudent.service.AnApplicationService;
 
 import javax.persistence.NoResultException;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ShortMessageServiceImpl implements ShortMessageService {
 
     @Autowired

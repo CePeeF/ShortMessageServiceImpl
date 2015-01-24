@@ -9,14 +9,20 @@ import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.PersistenceContext;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Created by meichris on 15.01.15.
  */
+@Repository
 public class MessageRepo {
 
+    @PersistenceContext
     static EntityManager em;
 
+    @Transactional
     public static Long createMessage(UserE userE,String message,Topic topic) {
         MessageE mE = new MessageE(userE,message,topic);
         em.persist(mE);
@@ -24,6 +30,7 @@ public class MessageRepo {
 
     }
 
+    @Transactional
     public static Long createRespondMessage(UserE userE, String message, Long predecessor) {
         MessageE preMessageE = findById(predecessor);
         Topic topic = preMessageE.getTopic();
@@ -31,9 +38,6 @@ public class MessageRepo {
         em.persist(respondMessageE);
         return respondMessageE.getMessageId();
     }
-
-
-
 
     public static boolean messageExists(Long id) {
         boolean exist = false;
@@ -46,7 +50,7 @@ public class MessageRepo {
         }
         return exist;
     }
-
+    
     public static boolean messageIsOrigin(Long id) {
         boolean origin = false;
         MessageE m = null;
@@ -59,14 +63,17 @@ public class MessageRepo {
         return origin;
     }
 
+    @Transactional
     public static void deleteMessage(Long Id) {
         em.remove(findById(Id));
     }
 
+    @Transactional
     public static MessageE findById(Long Id) {
         return em.find(MessageE.class,Id);
     }
 
+    @Transactional
     private static List<MessageE> getOriginMessagesWithTopic(Topic topic) {
         List<MessageE> messages = new ArrayList<>();
         try {
@@ -76,6 +83,7 @@ public class MessageRepo {
         return messages;
     }
 
+    @Transactional
     private static List<MessageE> getOriginMessagesWithTopicSinceDate(Topic topic, Date date) {
         List<MessageE> messages = new ArrayList<>();
         try {
@@ -85,6 +93,7 @@ public class MessageRepo {
         return messages;
     }
 
+    @Transactional
     private static List<MessageE> getMessagesByPredecessor(MessageE predecessor) {
         List<MessageE> messages = new ArrayList<>();
         try {
@@ -94,6 +103,7 @@ public class MessageRepo {
         return messages;
     }
 
+    @Transactional
     public static List<List<MessageE>> getMessagesByTopic(String topic) {
         Topic t = TopicRepo.findByTopicName(topic);
         List<List<MessageE>> messagesByTopicAndDate = new ArrayList<>();
@@ -111,7 +121,7 @@ public class MessageRepo {
         return messagesByTopicAndDate;
     }
 
-
+    @Transactional
     public static List<List<MessageE>> getMessagesByTopicSinceDate(String topic, Date date) {
         Topic t = TopicRepo.findByTopicName(topic);
         List<List<MessageE>> messagesByTopicAndDate = new ArrayList<>();
