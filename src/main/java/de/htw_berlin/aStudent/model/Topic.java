@@ -1,12 +1,14 @@
 package de.htw_berlin.aStudent.model;
 
+import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.*;
 
 /**
  * Created by meichris on 15.01.15.
  */
-public class Topic {
+@Entity
+public class Topic implements Serializable {
 
     @Id
     @GeneratedValue
@@ -21,6 +23,9 @@ public class Topic {
 
     @OneToMany(mappedBy = "topicMessage", cascade = CascadeType.ALL)
     private Set<MessageE> messages;
+
+    public Topic() {
+    }
 
     public Topic(String topic, UserE user) {
         this.topicName = topic;

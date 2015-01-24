@@ -1,12 +1,14 @@
 package de.htw_berlin.aStudent.model;
 
+import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.*;
 
 /**
  * Created by meichris on 15.01.15.
  */
-public class UserE {
+@Entity
+public class UserE implements Serializable {
 
     @Id
     private String name;
@@ -19,6 +21,9 @@ public class UserE {
 
     @OneToMany(mappedBy = "userMessage", cascade = CascadeType.ALL)
     private Set<MessageE> messages;
+
+    public UserE() {
+    }
 
     public UserE(String userName, String city) {
         this.name = userName;
