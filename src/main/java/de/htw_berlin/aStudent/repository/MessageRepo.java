@@ -3,8 +3,6 @@ package de.htw_berlin.aStudent.repository;
 import de.htw_berlin.aStudent.model.MessageE;
 import de.htw_berlin.aStudent.model.Topic;
 import de.htw_berlin.aStudent.model.UserE;
-import de.htw_berlin.f4.ai.kbe.kurznachrichten.Message;
-
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.EntityManager;
@@ -69,21 +67,8 @@ public class MessageRepo {
         return em.find(MessageE.class,Id);
     }
 
-//    public List<MessageE> getOriginMessagesByTopic(Topic topic) {
-//        Query q =  em.createQuery("from Message m where m.topic = " + topic + "and m.origin = " + Boolean.TRUE + "order by m.date");
-//        List<MessageE> messages = q.getResultList();
-//        return messages;
-//    }
-//
-//    public List<MessageE> getOriginMessagesByTopicAndDate(Topic topic, Date date) {
-//        Query q = em.createQuery("from Message m where m.topic = " + topic + "and m.origin = "+ Boolean.TRUE + "and m.date >= "+ date + "order by m.date");
-//        List<MessageE> messages = q.getResultList();
-//        return messages;
-//    }
-//
-
     private static List<MessageE> getOriginMessagesWithTopic(Topic topic) {
-        List<MessageE> messages = new ArrayList<MessageE>();
+        List<MessageE> messages = new ArrayList<>();
         try {
             Query q = em.createQuery("from MessageE m where m.topic = " + topic + "order by m.date");
             messages = q.getResultList();
@@ -92,7 +77,7 @@ public class MessageRepo {
     }
 
     private static List<MessageE> getOriginMessagesWithTopicSinceDate(Topic topic, Date date) {
-        List<MessageE> messages = new ArrayList<MessageE>();
+        List<MessageE> messages = new ArrayList<>();
         try {
             Query q = em.createQuery("from MessageE m where m.topic = " + topic + "and m.date >= " + date + "order by m.date");
             messages = q.getResultList();
@@ -101,7 +86,7 @@ public class MessageRepo {
     }
 
     private static List<MessageE> getMessagesByPredecessor(MessageE predecessor) {
-        List<MessageE> messages = new ArrayList<MessageE>();
+        List<MessageE> messages = new ArrayList<>();
         try {
             Query q = em.createQuery("from MessageE m where m.predecessor = " + predecessor + "order by m.date");
             messages = q.getResultList();
@@ -111,9 +96,9 @@ public class MessageRepo {
 
     public static List<List<MessageE>> getMessagesByTopic(String topic) {
         Topic t = TopicRepo.findByTopicName(topic);
-        List<List<MessageE>> messagesByTopicAndDate = new ArrayList<List<MessageE>>();
+        List<List<MessageE>> messagesByTopicAndDate = new ArrayList<>();
         List<MessageE> originMessagesWithTopic = getOriginMessagesWithTopic(t);
-        List<MessageE> originMessageWithRespondMessages = new ArrayList<MessageE>();
+        List<MessageE> originMessageWithRespondMessages = new ArrayList<>();
         int index = 0;
         if (!originMessagesWithTopic.isEmpty()) {
             for (MessageE mE: originMessagesWithTopic) {
@@ -129,9 +114,9 @@ public class MessageRepo {
 
     public static List<List<MessageE>> getMessagesByTopicSinceDate(String topic, Date date) {
         Topic t = TopicRepo.findByTopicName(topic);
-        List<List<MessageE>> messagesByTopicAndDate = new ArrayList<List<MessageE>>();
+        List<List<MessageE>> messagesByTopicAndDate = new ArrayList<>();
         List<MessageE> originMessagesWithTopic = getOriginMessagesWithTopicSinceDate(t,date);
-        List<MessageE> originMessageWithRespondMessages = new ArrayList<MessageE>();
+        List<MessageE> originMessageWithRespondMessages = new ArrayList<>();
         int index = 0;
         if (!originMessagesWithTopic.isEmpty()) {
             for (MessageE mE: originMessagesWithTopic) {

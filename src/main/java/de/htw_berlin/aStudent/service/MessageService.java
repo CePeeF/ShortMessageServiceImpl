@@ -50,8 +50,8 @@ public class MessageService {
 
     public static List<List<Message>> getMessagesByTopic(String topic) {
         List<List<MessageE>> messagesEByTopicAndDate = MessageRepo.getMessagesByTopic(topic);
-        List<List<Message>> messages = new ArrayList<List<Message>>();
-        List<Message> listMessage = new ArrayList<Message>();
+        List<List<Message>> messages = new ArrayList<>();
+        List<Message> listMessage = new ArrayList<>();
         Message m = null;
         for (List<MessageE> lmE: messagesEByTopicAndDate) {
             for (MessageE mE : lmE) {

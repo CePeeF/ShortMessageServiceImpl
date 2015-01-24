@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @EnableTransactionManagement
 @PropertySource("classpath:META-INF/database.properties")
-@Configuration("ShortMessageServiceJpaConfiguration")
+@Configuration("SmsJpaConfig")
 public class SmsJpaConfig {
     /* haelt zugang zu properties key-value paaren*/
 

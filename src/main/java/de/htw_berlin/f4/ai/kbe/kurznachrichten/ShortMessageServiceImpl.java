@@ -16,6 +16,15 @@ import javax.persistence.NoResultException;
 public class ShortMessageServiceImpl implements ShortMessageService {
 
     @Autowired
+    UserService usrService;
+
+    @Autowired
+    TopicService topicService;
+
+    @Autowired
+    MessageService msgService;
+        
+    @Autowired
     AnApplicationService anApplicationService;
 
     @Override
