@@ -2,6 +2,7 @@
 *.lib/*
 lib/*
 target/*
+target\*
 
 # Windows image file caches
 Thumbs.db
