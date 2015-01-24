@@ -1,6 +1,7 @@
 package de.htw_berlin.aStudent.model;
 
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 import javax.persistence.*;
@@ -9,7 +10,7 @@ import javax.persistence.*;
  * Created by meichris on 15.01.15.
  */
 @Entity
-public class MessageE {
+public class MessageE implements Serializable {
 
     public static final String QUERY_FETCH_ALL = "Message.fetchAll";
 
@@ -41,7 +42,9 @@ public class MessageE {
     @OneToMany(mappedBy = "predecessor", cascade = CascadeType.ALL)
     private Set<MessageE> responds;
 
-
+    public MessageE() {
+    }
+    
     public MessageE(UserE user, String content, Topic topic) {
         this.content = content;
         this.userMessage = user;
