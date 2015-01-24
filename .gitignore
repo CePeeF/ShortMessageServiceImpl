@@ -3,6 +3,7 @@
 lib/*
 target/*
 target\*
+*.iml
 
 # Windows image file caches
 Thumbs.db
