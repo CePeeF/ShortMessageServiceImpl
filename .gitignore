@@ -3,6 +3,12 @@
 lib/*
 target/*
 target\*
+target/
+target\
+/target/*
+\target\*
+/target/
+\target\
 *.iml
 
 # Windows image file caches
@@ -48,3 +54,4 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+target/ShortMessageServiceImpl-0.0.1.jar
