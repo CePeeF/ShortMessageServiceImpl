@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by meichris on 15.01.15.
  */
-public class UserRepoImpl {
+public class UserRepo {
 
 
     static EntityManager em;
@@ -22,7 +22,7 @@ public class UserRepoImpl {
     }
 
     public static List<UserE> getAllUsers() {
-        return  em.createQuery("Select u from User u").getResultList();
+        return  em.createQuery("Select u from UserE u").getResultList();
     }
 
     public static boolean userExits(String username) {

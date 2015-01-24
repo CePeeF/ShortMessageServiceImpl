@@ -6,7 +6,7 @@ import javax.persistence.*;
 /**
  * Created by meichris on 15.01.15.
  */
-public class TopicE {
+public class Topic {
 
     @Id
     @GeneratedValue
@@ -22,7 +22,7 @@ public class TopicE {
     @OneToMany(mappedBy = "topicMessage", cascade = CascadeType.ALL)
     private Set<MessageE> messages;
 
-    public TopicE(String topic, UserE user) {
+    public Topic(String topic, UserE user) {
         this.topicName = topic;
         this.userFromTopic = user;
     }
@@ -56,7 +56,7 @@ public class TopicE {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        TopicE other = (TopicE) obj;
+        Topic other = (Topic) obj;
         if (topicId == null) {
             if (other.topicId != null) {
                 return false;

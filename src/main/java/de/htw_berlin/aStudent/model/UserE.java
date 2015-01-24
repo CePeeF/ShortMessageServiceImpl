@@ -15,7 +15,7 @@ public class UserE {
     private String city;
 
     @OneToMany(mappedBy = "userTopic", cascade = CascadeType.ALL)
-    private Set<TopicE> topics;
+    private Set<Topic> topics;
 
     @OneToMany(mappedBy = "userMessage", cascade = CascadeType.ALL)
     private Set<MessageE> messages;

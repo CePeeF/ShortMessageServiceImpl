@@ -32,7 +32,7 @@ public class MessageE {
 
     @ManyToOne
     @JoinColumn(name = "topicMessage")
-    private TopicE topicMessage;
+    private Topic topicMessage;
 
     @ManyToOne
     @JoinColumn(name = "predecessor")
@@ -42,7 +42,7 @@ public class MessageE {
     private Set<MessageE> responds;
 
 
-    public MessageE(UserE user, String content, TopicE topic) {
+    public MessageE(UserE user, String content, Topic topic) {
         this.content = content;
         this.userMessage = user;
         this.topicMessage = topic;
@@ -51,7 +51,7 @@ public class MessageE {
         this.date = new Date();
     }
 
-    public MessageE(UserE user, String content,TopicE topic, MessageE predecessor) {
+    public MessageE(UserE user, String content,Topic topic, MessageE predecessor) {
         this.content = content;
         this.userMessage = user;
         this.topicMessage = topic;
@@ -72,7 +72,7 @@ public class MessageE {
         return userMessage;
     }
 
-    public TopicE getTopic() {
+    public Topic getTopic() {
         return topicMessage;
     }
 
