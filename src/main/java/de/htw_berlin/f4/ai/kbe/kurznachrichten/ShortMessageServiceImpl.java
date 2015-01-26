@@ -8,8 +8,7 @@ import de.htw_berlin.aStudent.service.MessageService;
 import de.htw_berlin.aStudent.service.TopicService;
 import de.htw_berlin.aStudent.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import de.htw_berlin.aStudent.service.AnApplicationService;
+//import de.htw_berlin.aStudent.service.AnApplicationService;
 
 import javax.persistence.NoResultException;
 import org.springframework.stereotype.Service;
@@ -26,8 +25,8 @@ public class ShortMessageServiceImpl implements ShortMessageService {
     @Autowired
     MessageService msgService;
         
-    @Autowired
-    AnApplicationService anApplicationService;
+    //@Autowired
+    //AnApplicationService anApplicationService;
 
     @Override
     public Long createMessage(String userName, String message, String topic) throws IllegalArgumentException, NullPointerException {
@@ -69,17 +68,6 @@ public class ShortMessageServiceImpl implements ShortMessageService {
 
     }
 
-//	@Override
-//	public void deleteMessage2(String userName, Long messageId) throws AuthorizationException, IllegalArgumentException, NullPointerException {
-//		if (userName != null && messageId != null) {
-//			if (MessageService.messageExists(messageId) && UserService.userExits(userName) && MessageService.messageIsOrigin(messageId)) {
-//				MessageE m = MessageService.findById(messageId);
-//				if (m.getUser().getName().equals(userName)) {
-//					MessageService.deleteMessage(m.getMessageId());
-//				} else throw new AuthorizationException("Sie sind nicht der Erzeuger!");
-//			} else throw new IllegalArgumentException();
-//		} else throw new NullPointerException();
-//	}
     @Override
     public void createTopic(String userName, String topic) throws IllegalArgumentException, NullPointerException {
 
@@ -107,7 +95,7 @@ public class ShortMessageServiceImpl implements ShortMessageService {
     @Override
     public List<List<Message>> getMessageByTopic(String topic, Date since) throws IllegalArgumentException, NullPointerException {
 
-        List<List<Message>> listMessage = new ArrayList<List<Message>>();
+        List<List<Message>> listMessage = new ArrayList<>();
 
         if (topic == null) {
             throw new NullPointerException();
@@ -135,8 +123,7 @@ public class ShortMessageServiceImpl implements ShortMessageService {
         u.setCity(city);
         u.setName(userName);
         UserService.createUser(u);
-
-        anApplicationService.doSomeThing();
+        //anApplicationService.doSomeThing();
     }
 
     @Override
@@ -152,5 +139,4 @@ public class ShortMessageServiceImpl implements ShortMessageService {
     public Set<User> getUsers() {
         return UserService.getAllUsers();
     }
-
 }

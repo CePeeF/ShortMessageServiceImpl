@@ -2,7 +2,6 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-
     <groupId>de.htw_berlin.astudent</groupId>
     <artifactId>ShortMessageServiceImpl</artifactId>
     <version>0.0.1</version>
@@ -36,12 +35,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!--  dependency>
-                <groupId>log4j</groupId>
-                <artifactId>log4j</artifactId>
-                <version>1.2.17</version>
-        </dependency-->
-
         <!-- Spring Framework -->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -66,13 +59,8 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
             <version>${spring.version}</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>9.1-901.jdbc4</version>
-        </dependency>
+        </dependency>        
+       
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
@@ -84,6 +72,12 @@
             <artifactId>spring-orm</artifactId>
             <version>3.2.3.RELEASE</version>
             <type>jar</type>
+        </dependency>
+        
+         <dependency>
+            <groupId>postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>9.1-901.jdbc4</version>
         </dependency>
 
         <dependency>
@@ -106,8 +100,7 @@
     </dependencies>
 
     <build>
-        <plugins>
-			
+        <plugins>			
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

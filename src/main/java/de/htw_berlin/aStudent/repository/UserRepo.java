@@ -19,7 +19,8 @@ public class UserRepo {
 
     @Transactional
     public void createUser(String userName, String city) {
-        em.persist(new UserE(userName, city));
+        UserE u = new UserE(userName, city);
+        em.persist(u);
     }
 
     @Transactional
@@ -48,8 +49,4 @@ public class UserRepo {
     public static void deleteUser(String name) {
         em.remove(findByUserName(name));
     }
-
-
-
-
 }

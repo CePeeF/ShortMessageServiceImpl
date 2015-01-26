@@ -14,10 +14,12 @@ import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.springframework.stereotype.Service;
 
 /**
  * Created by meichris on 23.01.15.
  */
+@Service
 public class MessageService {
 
     public static Long createMessage(String userName,String message,String topic) {

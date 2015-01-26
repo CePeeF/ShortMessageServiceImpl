@@ -6,10 +6,12 @@ import de.htw_berlin.aStudent.repository.UserRepo;
 
 import javax.persistence.NoResultException;
 import java.util.List;
+import org.springframework.stereotype.Service;
 
 /**
  * Created by meichris on 23.01.15.
  */
+@Service
 public class TopicService {
 
     public static void createTopic(String userFromTopic, String topicName) {

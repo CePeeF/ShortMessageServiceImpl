@@ -1,18 +1,15 @@
 package de.htw_berlin.aStudent.service;
-
 import de.htw_berlin.aStudent.model.UserE;
-import de.htw_berlin.aStudent.repository.MessageRepo;
 import de.htw_berlin.aStudent.repository.UserRepo;
 import de.htw_berlin.f4.ai.kbe.kurznachrichten.User;
-
-import javax.persistence.NoResultException;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
+import org.springframework.stereotype.Service;
 
 /**
  * Created by meichris on 23.01.15.
  */
+@Service
 public class UserService {
 
     public static void createUser (User u) {
