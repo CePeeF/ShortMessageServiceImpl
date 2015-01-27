@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 
 /**
@@ -16,54 +17,40 @@ import java.util.List;
 @Repository
 public class MockUserRepo implements UserRepoInterface {
 
-    List<UserE> luE;
+    Hashtable<String, UserE> hashUser;
 
     public MockUserRepo() {
-        luE = new ArrayList<UserE>();
+        hashUser = new Hashtable<String, UserE>();
     }
 
     @Transactional
     public void createUser(String userName, String city) {
-        luE.add(new UserE(userName, city));
+        hashUser.put(userName,new UserE(userName, city));
     }
 
     @Transactional
     public UserE findByUserName(String username) {
         UserE returnUserE = null;
-        if (!luE.isEmpty()) {
-            for (UserE uE : luE) {
-                if (uE.getName().equals(username)) {
-                    returnUserE = uE;
-                }
-            }
-        }
+        if (hashUser.containsKey(username))
+            returnUserE = hashUser.get(username);
         return returnUserE;
     }
 
     @Transactional
     public List<UserE> getAllUsers() {
-        return  luE;
+        return  new ArrayList<>(hashUser.values());
     }
     
     public boolean userExits(String username) {
         boolean exist = false;
-        UserE u = null;
-        try {
-            u = findByUserName(username);
-            exist = u.getName().equals(username);
-        } catch (NullPointerException e) {
-            exist = false;
-        }
+        if (hashUser.containsKey(username))
+            exist = true;
         return exist;
     }
 
     @Transactional
     public void deleteUser(String name) {
-        for (UserE uE: luE) {
-            if (uE.getName().equals(name)) {
-                luE.remove(uE);
-            }
-        }
+        hashUser.remove(name);
     }
 
 

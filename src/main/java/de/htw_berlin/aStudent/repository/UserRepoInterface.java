@@ -26,7 +26,4 @@ public interface UserRepoInterface {
 
     public void deleteUser(String name);
 
-
-
-
 }
