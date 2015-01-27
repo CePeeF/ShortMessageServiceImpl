@@ -4,6 +4,7 @@ import de.htw_berlin.aStudent.model.MessageE;
 import de.htw_berlin.aStudent.model.Topic;
 import de.htw_berlin.aStudent.model.UserE;
 import de.htw_berlin.aStudent.repository.MessageRepo;
+import de.htw_berlin.aStudent.repository.MessageRepoInterface;
 import de.htw_berlin.aStudent.repository.TopicRepo;
 import de.htw_berlin.aStudent.repository.UserRepo;
 import de.htw_berlin.f4.ai.kbe.kurznachrichten.Message;
@@ -21,6 +22,12 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class MessageService {
+
+    static MessageRepoInterface messageRepo;
+
+    public MessageService(MessageRepoInterface messageRepo) {
+        this.messageRepo = messageRepo;
+    }
 
     public static Long createMessage(String userName,String message,String topic) {
         UserE userE = UserRepo.findByUserName(userName);
