@@ -17,7 +17,7 @@ import java.util.List;
 @Repository
 public class MockUserRepo implements UserRepoInterface {
 
-    static Hashtable<String, UserE> hashUser;
+    private Hashtable<String, UserE> hashUser;
 
     public MockUserRepo() {
         hashUser = new Hashtable<String, UserE>();

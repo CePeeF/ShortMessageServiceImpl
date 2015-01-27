@@ -13,27 +13,33 @@ import org.springframework.transaction.annotation.Transactional;
  * Created by meichris on 15.01.15.
  */
 @Repository
-public class TopicRepo {
+public class TopicRepo implements TopicRepoInterface{
 
     @PersistenceContext
-    static EntityManager em;
+    private EntityManager em;
 
-    @Transactional
-    public static void createTopic(String userFromTopic, String topicName) {
-        em.persist(new Topic(topicName, UserRepo.findByUserName(userFromTopic)));
+    private UserRepoInterface userRepo;
+
+    public TopicRepo(UserRepoInterface userRepo) {
+        this.userRepo = userRepo;
     }
 
     @Transactional
-    public static Topic findByTopicName(String topicName) {
+    public void createTopic(String userFromTopic, String topicName) {
+        em.persist(new Topic(topicName, userRepo.findByUserName(userFromTopic)));
+    }
+
+    @Transactional
+    public Topic findByTopicName(String topicName) {
         return em.find(Topic.class, topicName);
     }
 
     @Transactional
-    public static List<Topic> getAllTopics() {
+    public List<Topic> getAllTopics() {
         return  em.createQuery("Select t from Topic t").getResultList();
     }
 
-    public static boolean topicExits(String topicName) {
+    public boolean topicExits(String topicName) {
         boolean exist = false;
         Topic tE = null;
         try {
@@ -46,7 +52,7 @@ public class TopicRepo {
     }
 
     @Transactional
-    public static void deleteTopic(String topicName) {
+    public void deleteTopic(String topicName) {
         em.remove(findByTopicName(topicName));
     }
 }

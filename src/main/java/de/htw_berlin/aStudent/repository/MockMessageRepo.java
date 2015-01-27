@@ -6,10 +6,6 @@ import de.htw_berlin.aStudent.model.UserE;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Hashtable;
@@ -19,16 +15,18 @@ import java.util.List;
  * Created by meichris on 15.01.15.
  */
 @Repository
-public class MockMessageRepo {
+public class MockMessageRepo implements MessageRepoInterface {
 
-    static Hashtable<Long, MessageE> hashMessage;
+    private Hashtable<Long, MessageE> hashMessage;
+    private TopicRepoInterface topicRepo;
 
-    public MockMessageRepo() {
+    public MockMessageRepo(TopicRepoInterface topicRepo) {
+        this.topicRepo = topicRepo;
         hashMessage = new Hashtable<Long, MessageE>();
     }
 
     @Transactional
-    public static Long createMessage(UserE userE,String message,Topic topic) {
+    public Long createMessage(UserE userE,String message,Topic topic) {
         MessageE mE = new MessageE(userE,message,topic);
         Long id = Integer.toUnsignedLong(hashMessage.size());
         hashMessage.put(id, mE);
@@ -37,7 +35,7 @@ public class MockMessageRepo {
     }
 
     @Transactional
-    public static Long createRespondMessage(UserE userE, String message, Long predecessor) {
+    public Long createRespondMessage(UserE userE, String message, Long predecessor) {
         MessageE preMessageE = findById(predecessor);
         Topic topic = preMessageE.getTopic();
         MessageE respondMessageE = new MessageE(userE,message, topic, preMessageE);
@@ -46,27 +44,27 @@ public class MockMessageRepo {
         return id;
     }
 
-    public static boolean messageExists(Long id) {
+    public boolean messageExists(Long id) {
         return hashMessage.containsKey(id);
     }
     
-    public static boolean messageIsOrigin(Long id) {
+    public boolean messageIsOrigin(Long id) {
         MessageE m = hashMessage.get(id);
         return m.getOrigin();
     }
 
     @Transactional
-    public static void deleteMessage(Long id) {
+    public void deleteMessage(Long id) {
         hashMessage.remove(id);
     }
 
     @Transactional
-    public static MessageE findById(Long id) {
+    public MessageE findById(Long id) {
         return hashMessage.get(id);
     }
 
     @Transactional
-    private static List<MessageE> getOriginMessagesWithTopic(Topic topic) {
+    private List<MessageE> getOriginMessagesWithTopic(String  topic) {
         List<MessageE> messages = new ArrayList<>(hashMessage.values());
         List<MessageE> messagesReturn = new ArrayList<>();
         for (MessageE mE: messages) {
@@ -78,7 +76,7 @@ public class MockMessageRepo {
     }
 
     @Transactional
-    private static List<MessageE> getOriginMessagesWithTopicSinceDate(Topic topic, Date date) {
+    private List<MessageE> getOriginMessagesWithTopicSinceDate(String topic, Date date) {
         List<MessageE> messages = new ArrayList<>(hashMessage.values());
         List<MessageE> messagesReturn = new ArrayList<>();
         for (MessageE mE: messages) {
@@ -90,7 +88,7 @@ public class MockMessageRepo {
     }
 
     @Transactional
-    private static List<MessageE> getMessagesByPredecessor(MessageE predecessor) {
+    private List<MessageE> getMessagesByPredecessor(MessageE predecessor) {
         List<MessageE> messages = new ArrayList<>(hashMessage.values());
         List<MessageE> messagesReturn = new ArrayList<>();
         for (MessageE mE: messages) {
@@ -102,10 +100,9 @@ public class MockMessageRepo {
     }
 
     @Transactional
-    public static List<List<MessageE>> getMessagesByTopic(String topic) {
-        Topic t = TopicRepo.findByTopicName(topic);
+    public List<List<MessageE>> getMessagesByTopic(String topic) {
         List<List<MessageE>> messagesByTopicAndDate = new ArrayList<>();
-        List<MessageE> originMessagesWithTopic = getOriginMessagesWithTopic(t);
+        List<MessageE> originMessagesWithTopic = getOriginMessagesWithTopic(topic);
         List<MessageE> originMessageWithRespondMessages = new ArrayList<>();
         int index = 0;
         if (!originMessagesWithTopic.isEmpty()) {
@@ -120,10 +117,9 @@ public class MockMessageRepo {
     }
 
     @Transactional
-    public static List<List<MessageE>> getMessagesByTopicSinceDate(String topic, Date date) {
-        Topic t = TopicRepo.findByTopicName(topic);
+    public List<List<MessageE>> getMessagesByTopicSinceDate(String topic, Date date) {
         List<List<MessageE>> messagesByTopicAndDate = new ArrayList<>();
-        List<MessageE> originMessagesWithTopic = getOriginMessagesWithTopicSinceDate(t,date);
+        List<MessageE> originMessagesWithTopic = getOriginMessagesWithTopicSinceDate(topic,date);
         List<MessageE> originMessageWithRespondMessages = new ArrayList<>();
         int index = 0;
         if (!originMessagesWithTopic.isEmpty()) {

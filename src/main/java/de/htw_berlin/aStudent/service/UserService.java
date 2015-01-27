@@ -14,17 +14,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
 
-    static UserRepoInterface userRepo;
+    private UserRepoInterface userRepo;
 
     public UserService(UserRepoInterface userRepo) {
         this.userRepo = userRepo;
     }
 
-    public static void createUser (User u) {
+    public void createUser (User u) {
         userRepo.createUser(u.getName(),u.getCity());
     }
 
-    public static User findByUserName(String username) {
+    public User findByUserName(String username) {
         User u = new User();
         UserE uE = userRepo.findByUserName(username);
         u.setCity(uE.getCity());
@@ -32,7 +32,7 @@ public class UserService {
         return u;
     }
 
-    public static Set<User> getAllUsers() {
+    public Set<User> getAllUsers() {
         Set<User> userSet;
         userSet = new HashSet<>();
         for (UserE uE : userRepo.getAllUsers()) {
@@ -44,11 +44,11 @@ public class UserService {
         return userSet;
     }
 
-    public static boolean userExits(String username) {
+    public boolean userExits(String username) {
         return userRepo.userExits(username);
     }
 
-    public static void deleteUser(String name) {
+    public void deleteUser(String name) {
         userRepo.deleteUser(name);
     }
 

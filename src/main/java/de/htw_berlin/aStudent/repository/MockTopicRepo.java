@@ -14,42 +14,41 @@ import java.util.*;
  * Created by meichris on 15.01.15.
  */
 @Repository
-public class MockTopicRepo {
+public class MockTopicRepo implements TopicRepoInterface {
 
-    static Hashtable<Long, Topic> hashTopic;
-    static Hashtable<String, Long> hashNameToLong;
+    private Hashtable<String, Topic> hashTopic;
+    private UserRepoInterface userRepo;
 
-    public MockTopicRepo() {
-        hashTopic = new Hashtable<Long, Topic>();
-        hashNameToLong = new Hashtable<String, Long>();
+    public MockTopicRepo(UserRepoInterface userRepo) {
+        this.userRepo = userRepo;
+        hashTopic = new Hashtable<>();
     }
 
     @Transactional
-    public static void createTopic(String userFromTopic, String topicName) {
-        hashNameToLong.put(topicName,Integer.toUnsignedLong(hashTopic.size()));
-        hashTopic.put(Integer.toUnsignedLong(hashTopic.size()),new Topic(topicName, UserRepo.findByUserName(userFromTopic)));
+    public void createTopic(String userFromTopic, String topicName) {
+        hashTopic.put(topicName,new Topic(topicName, userRepo.findByUserName(userFromTopic)));
 
     }
 
     @Transactional
-    public static Topic findByTopicName(String topicName) {
-        Long key = hashNameToLong.get(topicName);
-        return hashTopic.get(key);
+    public Topic findByTopicName(String topicName) {
+        return hashTopic.get(topicName);
     }
 
     @Transactional
-    public static List<Topic> getAllTopics() {
+    public List<Topic> getAllTopics() {
         return  new ArrayList<>(hashTopic.values());
     }
 
-    public static boolean topicExits(String topic) {
-        return hashNameToLong.containsKey(topic);
+    public boolean topicExits(String topic) {
+        boolean exist = false;
+        if (hashTopic.containsKey(topic))
+            exist = true;
+        return exist;
     }
 
     @Transactional
-    public static void deleteTopic(String name) {
-        Long key = hashNameToLong.get(name);
-//        if (key != null)
-        hashTopic.remove(key);
+    public void deleteTopic(String name) {
+        hashTopic.remove(name);
     }
 }

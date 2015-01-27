@@ -20,10 +20,16 @@ import org.springframework.transaction.annotation.Transactional;
 public class MessageRepo {
 
     @PersistenceContext
-    static EntityManager em;
+    private EntityManager em;
+
+    private TopicRepoInterface topicRepo;
+
+    public MessageRepo(TopicRepoInterface topicRepo) {
+        this.topicRepo = topicRepo;
+    }
 
     @Transactional
-    public static Long createMessage(UserE userE,String message,Topic topic) {
+    public Long createMessage(UserE userE,String message,Topic topic) {
         MessageE mE = new MessageE(userE,message,topic);
         em.persist(mE);
         return mE.getMessageId();
@@ -31,7 +37,7 @@ public class MessageRepo {
     }
 
     @Transactional
-    public static Long createRespondMessage(UserE userE, String message, Long predecessor) {
+    public Long createRespondMessage(UserE userE, String message, Long predecessor) {
         MessageE preMessageE = findById(predecessor);
         Topic topic = preMessageE.getTopic();
         MessageE respondMessageE = new MessageE(userE,message, topic, preMessageE);
@@ -39,7 +45,7 @@ public class MessageRepo {
         return respondMessageE.getMessageId();
     }
 
-    public static boolean messageExists(Long id) {
+    public boolean messageExists(Long id) {
         boolean exist = false;
         MessageE m = null;
         try {
@@ -51,7 +57,7 @@ public class MessageRepo {
         return exist;
     }
     
-    public static boolean messageIsOrigin(Long id) {
+    public boolean messageIsOrigin(Long id) {
         boolean origin = false;
         MessageE m = null;
         try {
@@ -64,17 +70,17 @@ public class MessageRepo {
     }
 
     @Transactional
-    public static void deleteMessage(Long Id) {
+    public void deleteMessage(Long Id) {
         em.remove(findById(Id));
     }
 
     @Transactional
-    public static MessageE findById(Long Id) {
+    public MessageE findById(Long Id) {
         return em.find(MessageE.class,Id);
     }
 
     @Transactional
-    private static List<MessageE> getOriginMessagesWithTopic(Topic topic) {
+    private  List<MessageE> getOriginMessagesWithTopic(String topic) {
         List<MessageE> messages = new ArrayList<>();
         try {
             Query q = em.createQuery("from MessageE m where m.topic = " + topic + "order by m.date");
@@ -84,7 +90,7 @@ public class MessageRepo {
     }
 
     @Transactional
-    private static List<MessageE> getOriginMessagesWithTopicSinceDate(Topic topic, Date date) {
+    private List<MessageE> getOriginMessagesWithTopicSinceDate(String topic, Date date) {
         List<MessageE> messages = new ArrayList<>();
         try {
             Query q = em.createQuery("from MessageE m where m.topic = " + topic + "and m.date >= " + date + "order by m.date");
@@ -94,7 +100,7 @@ public class MessageRepo {
     }
 
     @Transactional
-    private static List<MessageE> getMessagesByPredecessor(MessageE predecessor) {
+    private List<MessageE> getMessagesByPredecessor(MessageE predecessor) {
         List<MessageE> messages = new ArrayList<>();
         try {
             Query q = em.createQuery("from MessageE m where m.predecessor = " + predecessor + "order by m.date");
@@ -104,10 +110,9 @@ public class MessageRepo {
     }
 
     @Transactional
-    public static List<List<MessageE>> getMessagesByTopic(String topic) {
-        Topic t = TopicRepo.findByTopicName(topic);
+    public List<List<MessageE>> getMessagesByTopic(String topic) {
         List<List<MessageE>> messagesByTopicAndDate = new ArrayList<>();
-        List<MessageE> originMessagesWithTopic = getOriginMessagesWithTopic(t);
+        List<MessageE> originMessagesWithTopic = getOriginMessagesWithTopic(topic);
         List<MessageE> originMessageWithRespondMessages = new ArrayList<>();
         int index = 0;
         if (!originMessagesWithTopic.isEmpty()) {
@@ -122,10 +127,9 @@ public class MessageRepo {
     }
 
     @Transactional
-    public static List<List<MessageE>> getMessagesByTopicSinceDate(String topic, Date date) {
-        Topic t = TopicRepo.findByTopicName(topic);
+    public List<List<MessageE>> getMessagesByTopicSinceDate(String topic, Date date) {
         List<List<MessageE>> messagesByTopicAndDate = new ArrayList<>();
-        List<MessageE> originMessagesWithTopic = getOriginMessagesWithTopicSinceDate(t,date);
+        List<MessageE> originMessagesWithTopic = getOriginMessagesWithTopicSinceDate(topic,date);
         List<MessageE> originMessageWithRespondMessages = new ArrayList<>();
         int index = 0;
         if (!originMessagesWithTopic.isEmpty()) {

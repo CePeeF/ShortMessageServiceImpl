@@ -3,10 +3,7 @@ package de.htw_berlin.aStudent.service;
 import de.htw_berlin.aStudent.model.MessageE;
 import de.htw_berlin.aStudent.model.Topic;
 import de.htw_berlin.aStudent.model.UserE;
-import de.htw_berlin.aStudent.repository.MessageRepo;
-import de.htw_berlin.aStudent.repository.MessageRepoInterface;
-import de.htw_berlin.aStudent.repository.TopicRepo;
-import de.htw_berlin.aStudent.repository.UserRepo;
+import de.htw_berlin.aStudent.repository.*;
 import de.htw_berlin.f4.ai.kbe.kurznachrichten.Message;
 import de.htw_berlin.f4.ai.kbe.kurznachrichten.User;
 
@@ -23,42 +20,47 @@ import org.springframework.stereotype.Service;
 @Service
 public class MessageService {
 
-    static MessageRepoInterface messageRepo;
+    private MessageRepoInterface messageRepo;
+    private UserRepoInterface userRepo;
+    private TopicRepoInterface topicRepo;
 
-    public MessageService(MessageRepoInterface messageRepo) {
+
+    public MessageService(MessageRepoInterface messageRepo,UserRepoInterface userRepo,TopicRepoInterface topicRepo) {
         this.messageRepo = messageRepo;
+        this.userRepo = userRepo;
+        this.topicRepo = topicRepo;
     }
 
-    public static Long createMessage(String userName,String message,String topic) {
-        UserE userE = UserRepo.findByUserName(userName);
-        Topic topicE = TopicRepo.findByTopicName(topic);
-        return MessageRepo.createMessage(userE, message, topicE);
+    public Long createMessage(String userName,String message,String topic) {
+        UserE userE = userRepo.findByUserName(userName);
+        Topic t = topicRepo.findByTopicName(topic);
+        return messageRepo.createMessage(userE, message, t);
     }
 
-    public static Long createRespondMessage(String userName, String message, Long predecessor) {
-        UserE userE = UserRepo.findByUserName(userName);
-        return MessageRepo.createRespondMessage(userE, message, predecessor);
+    public Long createRespondMessage(String userName, String message, Long predecessor) {
+        UserE userE = userRepo.findByUserName(userName);
+        return messageRepo.createRespondMessage(userE, message, predecessor);
     }
 
-    public static boolean messageExists(Long id) {
-        return MessageRepo.messageExists(id);
+    public boolean messageExists(Long id) {
+        return messageRepo.messageExists(id);
     }
 
-    public static boolean messageIsOrigin(Long predecessor){
-        return MessageRepo.messageIsOrigin(predecessor);
+    public boolean messageIsOrigin(Long predecessor){
+        return messageRepo.messageIsOrigin(predecessor);
     }
 
-    public static void deleteMessage(Long id) {
-        MessageRepo.deleteMessage(id);
+    public void deleteMessage(Long id) {
+        messageRepo.deleteMessage(id);
     }
 
-    public static Message findById(Long id) {
-        MessageE mE = MessageRepo.findById(id);
+    public Message findById(Long id) {
+        MessageE mE = messageRepo.findById(id);
         return MessageE2Message(mE);
     }
 
-    public static List<List<Message>> getMessagesByTopic(String topic) {
-        List<List<MessageE>> messagesEByTopicAndDate = MessageRepo.getMessagesByTopic(topic);
+    public List<List<Message>> getMessagesByTopic(String topic) {
+        List<List<MessageE>> messagesEByTopicAndDate = messageRepo.getMessagesByTopic(topic);
         List<List<Message>> messages = new ArrayList<>();
         List<Message> listMessage = new ArrayList<>();
         Message m = null;
@@ -73,8 +75,8 @@ public class MessageService {
         return messages;
     }
 
-    public static List<List<Message>> getMessagesByTopicSinceDate(String topic, Date date) {
-        List<List<MessageE>> messagesEByTopicAndDate = MessageRepo.getMessagesByTopicSinceDate(topic,date);
+    public List<List<Message>> getMessagesByTopicSinceDate(String topic, Date date) {
+        List<List<MessageE>> messagesEByTopicAndDate = messageRepo.getMessagesByTopicSinceDate(topic,date);
         List<List<Message>> messages = new ArrayList<List<Message>>();
         List<Message> listMessage = new ArrayList<Message>();
         Message m = null;
@@ -89,7 +91,7 @@ public class MessageService {
         return messages;
     }
 
-    private static Message MessageE2Message(MessageE mE) {
+    private Message MessageE2Message(MessageE mE) {
         Message m =  new Message();
         m.setContent(mE.getContent());
         m.setDate(mE.getDate());

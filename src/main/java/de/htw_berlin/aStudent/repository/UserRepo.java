@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserRepo {
 
     @PersistenceContext
-    static EntityManager em;
+    private EntityManager em;
 
     @Transactional
     public void createUser(String userName, String city) {
@@ -24,16 +24,16 @@ public class UserRepo {
     }
 
     @Transactional
-    public static UserE findByUserName(String username) {
+    public UserE findByUserName(String username) {
         return em.find(UserE.class, username);
     }
 
     @Transactional
-    public static List<UserE> getAllUsers() {
+    public List<UserE> getAllUsers() {
         return  em.createQuery("Select u from UserE u").getResultList();
     }
     
-    public static boolean userExits(String username) {
+    public boolean userExits(String username) {
         boolean exist = false;
         UserE u = null;
         try {
@@ -46,7 +46,7 @@ public class UserRepo {
     }
 
     @Transactional
-    public static void deleteUser(String name) {
+    public void deleteUser(String name) {
         em.remove(findByUserName(name));
     }
 }

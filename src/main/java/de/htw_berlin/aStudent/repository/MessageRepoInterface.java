@@ -1,8 +1,11 @@
 package de.htw_berlin.aStudent.repository;
 
 import de.htw_berlin.aStudent.model.MessageE;
+import de.htw_berlin.aStudent.model.Topic;
+import de.htw_berlin.aStudent.model.UserE;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -11,19 +14,19 @@ import java.util.List;
 @Repository
 public interface MessageRepoInterface {
 
-    public Long createMessage();
+    public Long createMessage(UserE userE,String message,Topic topic);
 
-    public Long createRespondMessage();
+    public Long createRespondMessage(UserE userE, String message, Long predecessor);
 
-    public boolean messageExists();
+    public boolean messageExists(Long id);
     
-    public boolean messageIsOrigin();
+    public boolean messageIsOrigin(Long id);
 
-    public void deleteMessage();
+    public void deleteMessage(Long id);
 
-    public MessageE findById();
+    public MessageE findById(Long id);
 
-    public List<List<MessageE>> getMessagesByTopic();
+    public List<List<MessageE>> getMessagesByTopic(String topic);
 
-    public List<List<MessageE>> getMessagesByTopicSinceDate();
+    public List<List<MessageE>> getMessagesByTopicSinceDate(String topic, Date date);
 }

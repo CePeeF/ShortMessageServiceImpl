@@ -4,6 +4,8 @@ import de.htw_berlin.aStudent.model.Topic;
 
 import java.util.*;
 
+import de.htw_berlin.aStudent.repository.MessageRepoInterface;
+import de.htw_berlin.aStudent.repository.TopicRepoInterface;
 import de.htw_berlin.aStudent.repository.UserRepoInterface;
 import de.htw_berlin.aStudent.service.MessageService;
 import de.htw_berlin.aStudent.service.TopicService;
@@ -29,44 +31,52 @@ public class ShortMessageServiceImpl implements ShortMessageService {
     //@Autowired
     //AnApplicationService anApplicationService;
 
-    public ShortMessageServiceImpl(UserRepoInterface userRepo) {
+    public ShortMessageServiceImpl(UserRepoInterface userRepo, TopicRepoInterface topicRepo, MessageRepoInterface messageRepo) {
         this.usrService = new UserService(userRepo);
+        this.topicService = new TopicService(topicRepo);
+        this.msgService = new MessageService(messageRepo,userRepo,topicRepo);
     }
 
     @Override
     public Long createMessage(String userName, String message, String topic) throws IllegalArgumentException, NullPointerException {
         if (userName == null || message == null || topic == null) {
             throw new NullPointerException();
-        } else if (!UserService.userExits(userName) || !TopicService.topicExits(topic) || message.length() > 255 || message.length() < 10) {
+        } else if (!usrService.userExits(userName) || !topicService.topicExits(topic) || message.length() > 255 || message.length() < 10) {
             throw new IllegalArgumentException();
         }
 
-        return MessageService.createMessage(userName, message, topic);
+        return msgService.createMessage(userName, message, topic);
     }
 
     @Override
     public Long respondToMessage(String userName, String message, Long predecessor) throws IllegalArgumentException, NullPointerException {
         if (userName == null || message == null || predecessor == null) {
             throw new NullPointerException();
-        } else if (!UserService.userExits(userName) || !MessageService.messageExists(predecessor)
-          || !MessageService.messageIsOrigin(predecessor) || message.length() > 255 || message.length() < 10) {
+        } else if (!usrService.userExits(userName) || !msgService.messageExists(predecessor)
+          || !msgService.messageIsOrigin(predecessor) || message.length() > 255 || message.length() < 10) {
             throw new IllegalArgumentException();
         }
 
-        return MessageService.createRespondMessage(userName, message, predecessor);
+        return msgService.createRespondMessage(userName, message, predecessor);
     }
 
     @Override
     public void deleteMessage(String userName, Long messageId) throws AuthorizationException, IllegalArgumentException, NullPointerException {
 
-        Message m = MessageService.findById(messageId);
+
 
         if (userName == null || messageId == null) {
             throw new NullPointerException();
-        } else if (!MessageService.messageExists(messageId) || !UserService.userExits(userName) || !MessageService.messageIsOrigin(messageId)) {
+        }
+
+        if (!msgService.messageExists(messageId) || !usrService.userExits(userName) || !msgService.messageIsOrigin(messageId)) {
             throw new IllegalArgumentException();
-        } else if (m.getUser().getName().equals(userName)) {
-            MessageService.deleteMessage(m.getMessageId());
+        }
+
+        Message m = msgService.findById(messageId);
+
+        if (m.getUser().getName().equals(userName)) {
+            msgService.deleteMessage(m.getMessageId());
         } else {
             throw new AuthorizationException("Sie sind nicht der Erzeuger!");
         }
@@ -78,17 +88,17 @@ public class ShortMessageServiceImpl implements ShortMessageService {
 
         if (userName == null || topic == null) {
             throw new NullPointerException();
-        } else if (!UserService.userExits(userName) || !TopicService.topicExits(topic) || topic.length() < 2 || topic.length() > 70) {
+        } else if (!usrService.userExits(userName) || !topicService.topicExits(topic) || topic.length() < 2 || topic.length() > 70) {
             throw new IllegalArgumentException();
         }
-        TopicService.createTopic(userName, topic);
+        topicService.createTopic(userName, topic);
     }
 
     @Override
     public Set<String> getTopics() {
         Set<String> set = new HashSet<>();
         try {
-            for (Topic t : TopicService.getAllTopics()) {
+            for (Topic t : topicService.getAllTopics()) {
                 set.add(t.getTopicName());
             }
         } catch (NoResultException e) {
@@ -104,12 +114,12 @@ public class ShortMessageServiceImpl implements ShortMessageService {
 
         if (topic == null) {
             throw new NullPointerException();
-        } else if (!TopicService.topicExits(topic)) {
+        } else if (!topicService.topicExits(topic)) {
             throw new IllegalArgumentException();
         } else if (since == null) {
-            listMessage = MessageService.getMessagesByTopic(topic);
+            listMessage = msgService.getMessagesByTopic(topic);
         } else {
-            listMessage = MessageService.getMessagesByTopicSinceDate(topic, since);
+            listMessage = msgService.getMessagesByTopicSinceDate(topic, since);
         }
 
         return listMessage;
@@ -121,27 +131,27 @@ public class ShortMessageServiceImpl implements ShortMessageService {
         if (userName == null || city == null) {
             throw new NullPointerException();
         }
-        if (UserService.userExits(userName) || userName.length() < 4 || userName.length() > 30) {
+        if (usrService.userExits(userName) || userName.length() < 4 || userName.length() > 30) {
             throw new IllegalArgumentException();
         }
         User u = new User();
         u.setCity(city);
         u.setName(userName);
-        UserService.createUser(u);
+        usrService.createUser(u);
         //anApplicationService.doSomeThing();
     }
 
     @Override
     public void deleteUser(String userName) {
 
-        if (UserService.userExits(userName)) {
+        if (usrService.userExits(userName)) {
             throw new IllegalArgumentException();
         }
-        UserService.deleteUser(userName);
+        usrService.deleteUser(userName);
     }
 
     @Override
     public Set<User> getUsers() {
-        return UserService.getAllUsers();
+        return usrService.getAllUsers();
     }
 }
