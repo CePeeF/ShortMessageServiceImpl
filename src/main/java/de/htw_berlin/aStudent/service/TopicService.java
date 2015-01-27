@@ -2,6 +2,7 @@ package de.htw_berlin.aStudent.service;
 
 import de.htw_berlin.aStudent.model.Topic;
 import de.htw_berlin.aStudent.repository.TopicRepo;
+import de.htw_berlin.aStudent.repository.TopicRepoInterface;
 import de.htw_berlin.aStudent.repository.UserRepo;
 
 import javax.persistence.NoResultException;
@@ -14,23 +15,29 @@ import org.springframework.stereotype.Service;
 @Service
 public class TopicService {
 
+    static TopicRepoInterface topicRepo;
+
+    public TopicService(TopicRepoInterface topicRepo) {
+        this.topicRepo = topicRepo;
+    }
+
     public static void createTopic(String userFromTopic, String topicName) {
-        TopicRepo.createTopic(userFromTopic, topicName);
+        topicRepo.createTopic(userFromTopic, topicName);
     }
 
     public static Topic findByTopicName(String topicName) {
-        return TopicRepo.findByTopicName(topicName);
+        return topicRepo.findByTopicName(topicName);
     }
 
     public static List<Topic> getAllTopics() {
-        return  TopicRepo.getAllTopics();
+        return  topicRepo.getAllTopics();
     }
 
     public static boolean topicExits(String topic) {
-        return TopicRepo.topicExits(topic);
+        return topicRepo.topicExits(topic);
     }
 
     public static void deleteTopic(String name) {
-        TopicRepo.deleteTopic(name);
+        topicRepo.deleteTopic(name);
     }
 }

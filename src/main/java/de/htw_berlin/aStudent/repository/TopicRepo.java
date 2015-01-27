@@ -33,12 +33,12 @@ public class TopicRepo {
         return  em.createQuery("Select t from Topic t").getResultList();
     }
 
-    public static boolean topicExits(String topic) {
+    public static boolean topicExits(String topicName) {
         boolean exist = false;
         Topic tE = null;
         try {
-            tE = findByTopicName(topic);
-            exist = tE.getTopicName().equals(topic);
+            tE = findByTopicName(topicName);
+            exist = tE.getTopicName().equals(topicName);
         } catch (NoResultException e) {
             exist = false;
         }
@@ -46,7 +46,7 @@ public class TopicRepo {
     }
 
     @Transactional
-    public static void deleteTopic(String name) {
-        em.remove(findByTopicName(name));
+    public static void deleteTopic(String topicName) {
+        em.remove(findByTopicName(topicName));
     }
 }

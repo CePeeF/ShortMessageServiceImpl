@@ -11,13 +11,13 @@ import java.util.List;
 @Repository
 public interface TopicRepoInterface {
 
-    public void createTopic();
+    public void createTopic(String userFromTopic, String topicName);
 
-    public Topic findByTopicName();
+    public Topic findByTopicName(String topicName);
 
     public List<Topic> getAllTopics();
 
-    public boolean topicExits();
+    public boolean topicExits(String topicName);
 
-    public void deleteTopic();
+    public void deleteTopic(String topicName);
 }
