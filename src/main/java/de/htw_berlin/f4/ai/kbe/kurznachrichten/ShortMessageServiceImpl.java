@@ -4,6 +4,7 @@ import de.htw_berlin.aStudent.model.Topic;
 
 import java.util.*;
 
+import de.htw_berlin.aStudent.repository.UserRepoInterface;
 import de.htw_berlin.aStudent.service.MessageService;
 import de.htw_berlin.aStudent.service.TopicService;
 import de.htw_berlin.aStudent.service.UserService;
@@ -27,6 +28,10 @@ public class ShortMessageServiceImpl implements ShortMessageService {
         
     //@Autowired
     //AnApplicationService anApplicationService;
+
+    public ShortMessageServiceImpl(UserRepoInterface userRepo) {
+        this.usrService = new UserService(userRepo);
+    }
 
     @Override
     public Long createMessage(String userName, String message, String topic) throws IllegalArgumentException, NullPointerException {
