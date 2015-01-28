@@ -12,12 +12,14 @@ import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 /**
  * Created by meichris on 23.01.15.
  */
-@Service
+@Component
 public class MessageService {
 
     private MessageRepoInterface messageRepo;
@@ -60,35 +62,41 @@ public class MessageService {
     }
 
     public List<List<Message>> getMessagesByTopic(String topic) {
-        List<List<MessageE>> messagesEByTopicAndDate = messageRepo.getMessagesByTopic(topic);
-        List<List<Message>> messages = new ArrayList<>();
-        List<Message> listMessage = new ArrayList<>();
-        Message m = null;
-        for (List<MessageE> lmE: messagesEByTopicAndDate) {
-            for (MessageE mE : lmE) {
-                m = MessageE2Message(mE);
-                listMessage.add(m);
-                m = null;
+        List<Message> returnInnerList = new ArrayList<>();
+        List<List<Message>> returnList = new ArrayList<>();
+        List<List<MessageE>> RepoTempList = new ArrayList<>();
+        List<MessageE> originList = new ArrayList<>();
+
+        RepoTempList = messageRepo.getMessagesByTopic(topic);
+
+        for (List<MessageE> listME: RepoTempList) {
+            for (MessageE ME: listME) {
+                Message m = MessageE2Message(ME);
+                returnInnerList.add(m);
             }
-            messages.add(listMessage);
+            returnList.add(new ArrayList<>(returnInnerList));
+            returnInnerList.clear();
         }
-        return messages;
+        return returnList;
     }
 
     public List<List<Message>> getMessagesByTopicSinceDate(String topic, Date date) {
-        List<List<MessageE>> messagesEByTopicAndDate = messageRepo.getMessagesByTopicSinceDate(topic,date);
-        List<List<Message>> messages = new ArrayList<List<Message>>();
-        List<Message> listMessage = new ArrayList<Message>();
-        Message m = null;
-        for (List<MessageE> lmE: messagesEByTopicAndDate) {
-            for (MessageE mE : lmE) {
-                m = MessageE2Message(mE);
-                listMessage.add(m);
-                m = null;
+        List<Message> returnInnerList = new ArrayList<>();
+        List<List<Message>> returnList = new ArrayList<>();
+        List<List<MessageE>> RepoTempList = new ArrayList<>();
+        List<MessageE> originList = new ArrayList<>();
+
+        RepoTempList = messageRepo.getMessagesByTopic(topic);
+
+        for (List<MessageE> listME: RepoTempList) {
+            for (MessageE ME: listME) {
+                Message m = MessageE2Message(ME);
+                returnInnerList.add(m);
             }
-            messages.add(listMessage);
+            returnList.add(new ArrayList<>(returnInnerList));
+            returnInnerList.clear();
         }
-        return messages;
+        return returnList;
     }
 
     private Message MessageE2Message(MessageE mE) {

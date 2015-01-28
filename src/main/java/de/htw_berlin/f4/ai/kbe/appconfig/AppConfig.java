@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 
-@ComponentScan("de.htw_berlin.aStudent")
+@ComponentScan("de.htw_berlin")
 @Import(SmsJpaConfig.class)
 @Configuration
 public class AppConfig {

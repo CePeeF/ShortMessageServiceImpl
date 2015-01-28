@@ -16,7 +16,7 @@ public class MessageE implements Serializable {
 
     @Id
     @GeneratedValue
-    private Long messageId;
+    public Long messageId; // public for MockMessageRepo !!!!!!!!!!!!!!!!!!!!!
 
     @Column
     private String content;

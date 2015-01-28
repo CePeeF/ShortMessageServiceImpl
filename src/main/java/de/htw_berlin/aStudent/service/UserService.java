@@ -6,12 +6,14 @@ import de.htw_berlin.aStudent.repository.UserRepoInterface;
 import de.htw_berlin.f4.ai.kbe.kurznachrichten.User;
 import java.util.HashSet;
 import java.util.Set;
+
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 /**
  * Created by meichris on 23.01.15.
  */
-@Service
+@Component
 public class UserService {
 
     private UserRepoInterface userRepo;

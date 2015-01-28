@@ -29,6 +29,7 @@ public class MockMessageRepo implements MessageRepoInterface {
     public Long createMessage(UserE userE,String message,Topic topic) {
         MessageE mE = new MessageE(userE,message,topic);
         Long id = Integer.toUnsignedLong(hashMessage.size());
+        mE.messageId = id;
         hashMessage.put(id, mE);
         return id;
 
@@ -40,6 +41,7 @@ public class MockMessageRepo implements MessageRepoInterface {
         Topic topic = preMessageE.getTopic();
         MessageE respondMessageE = new MessageE(userE,message, topic, preMessageE);
         Long id = Integer.toUnsignedLong(hashMessage.size());
+        respondMessageE.messageId = id;
         hashMessage.put(id, respondMessageE);
         return id;
     }
@@ -49,13 +51,15 @@ public class MockMessageRepo implements MessageRepoInterface {
     }
     
     public boolean messageIsOrigin(Long id) {
-        MessageE m = hashMessage.get(id);
-        return m.getOrigin();
+        MessageE mE = hashMessage.get(id);
+        return mE.getOrigin();
     }
 
     @Transactional
     public void deleteMessage(Long id) {
+        System.out.println("delete Message with id: " + id + "...");
         hashMessage.remove(id);
+        System.out.println("Message with id: " + id + " deletet");
     }
 
     @Transactional
@@ -68,7 +72,7 @@ public class MockMessageRepo implements MessageRepoInterface {
         List<MessageE> messages = new ArrayList<>(hashMessage.values());
         List<MessageE> messagesReturn = new ArrayList<>();
         for (MessageE mE: messages) {
-            if (mE.getTopic().getTopicName().equals(topic)) {
+            if (mE.getTopic().getTopicName().equals(topic) && mE.getOrigin()) {
                 messagesReturn.add(mE);
             }
         }
@@ -80,7 +84,7 @@ public class MockMessageRepo implements MessageRepoInterface {
         List<MessageE> messages = new ArrayList<>(hashMessage.values());
         List<MessageE> messagesReturn = new ArrayList<>();
         for (MessageE mE: messages) {
-            if (mE.getTopic().getTopicName().equals(topic) && mE.getDate().after(date)) {
+            if (mE.getTopic().getTopicName().equals(topic) && mE.getDate().after(date) && mE.getOrigin()) {
                 messagesReturn.add(mE);
             }
         }
@@ -92,8 +96,10 @@ public class MockMessageRepo implements MessageRepoInterface {
         List<MessageE> messages = new ArrayList<>(hashMessage.values());
         List<MessageE> messagesReturn = new ArrayList<>();
         for (MessageE mE: messages) {
-            if (mE.getPredecessor().equals(predecessor)) {
-                messagesReturn.add(mE);
+            if (mE.getPredecessor() != null) {
+                if (mE.getPredecessor().messageId == predecessor.messageId) {
+                    messagesReturn.add(mE);
+                }
             }
         }
         return messagesReturn;
@@ -101,35 +107,46 @@ public class MockMessageRepo implements MessageRepoInterface {
 
     @Transactional
     public List<List<MessageE>> getMessagesByTopic(String topic) {
-        List<List<MessageE>> messagesByTopicAndDate = new ArrayList<>();
-        List<MessageE> originMessagesWithTopic = getOriginMessagesWithTopic(topic);
-        List<MessageE> originMessageWithRespondMessages = new ArrayList<>();
-        int index = 0;
-        if (!originMessagesWithTopic.isEmpty()) {
-            for (MessageE mE: originMessagesWithTopic) {
-                originMessageWithRespondMessages.add(mE);
-                originMessageWithRespondMessages.addAll(getMessagesByPredecessor(mE));
-                messagesByTopicAndDate.add(index++, originMessageWithRespondMessages);
-                originMessageWithRespondMessages.clear();
+        List<MessageE> innerList = new ArrayList<>();
+        List<List<MessageE>> returnList = new ArrayList<>();
+        List<MessageE> originList = new ArrayList<>();
+        List<MessageE> followerList = new ArrayList<>();
+
+        originList = getOriginMessagesWithTopic(topic);
+
+        for (MessageE originME: originList) {
+            followerList = getMessagesByPredecessor(originME);
+            innerList.add(originME);
+            for (MessageE followerME: followerList) {
+                innerList.add(followerME);
             }
+            returnList.add(new ArrayList<MessageE>(innerList));
+            innerList.clear();
+            followerList.clear();
         }
-        return messagesByTopicAndDate;
+        return returnList;
     }
+
 
     @Transactional
     public List<List<MessageE>> getMessagesByTopicSinceDate(String topic, Date date) {
-        List<List<MessageE>> messagesByTopicAndDate = new ArrayList<>();
-        List<MessageE> originMessagesWithTopic = getOriginMessagesWithTopicSinceDate(topic,date);
-        List<MessageE> originMessageWithRespondMessages = new ArrayList<>();
-        int index = 0;
-        if (!originMessagesWithTopic.isEmpty()) {
-            for (MessageE mE: originMessagesWithTopic) {
-                originMessageWithRespondMessages.add(mE);
-                originMessageWithRespondMessages.addAll(getMessagesByPredecessor(mE));
-                messagesByTopicAndDate.add(index++, originMessageWithRespondMessages);
-                originMessageWithRespondMessages.clear();
+        List<MessageE> innerList = new ArrayList<>();
+        List<List<MessageE>> returnList = new ArrayList<>();
+        List<MessageE> originList = new ArrayList<>();
+        List<MessageE> followerList = new ArrayList<>();
+
+        originList = getOriginMessagesWithTopicSinceDate(topic,date);
+
+        for (MessageE originME: originList) {
+            followerList = getMessagesByPredecessor(originME);
+            innerList.add(originME);
+            for (MessageE followerME: followerList) {
+                innerList.add(followerME);
             }
+            returnList.add(new ArrayList<MessageE>(innerList));
+            innerList.clear();
+            followerList.clear();
         }
-        return messagesByTopicAndDate;
+        return returnList;
     }
 }

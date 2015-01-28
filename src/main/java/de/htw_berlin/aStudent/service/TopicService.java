@@ -9,16 +9,16 @@ import javax.persistence.NoResultException;
 import java.util.List;
 
 import de.htw_berlin.aStudent.repository.UserRepoInterface;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 /**
  * Created by meichris on 23.01.15.
  */
-@Service
+@Component
 public class TopicService {
 
     private TopicRepoInterface topicRepo;
-    private UserRepoInterface userRepo;
 
     public TopicService(TopicRepoInterface topicRepo) {
         this.topicRepo = topicRepo;

@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Created by meichris on 15.01.15.
  */
 @Repository
-public class MessageRepo {
+public class MessageRepo implements MessageRepoInterface {
 
     @PersistenceContext
     private EntityManager em;

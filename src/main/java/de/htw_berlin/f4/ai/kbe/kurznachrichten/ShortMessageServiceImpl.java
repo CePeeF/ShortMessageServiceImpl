@@ -7,6 +7,7 @@ import java.util.*;
 import de.htw_berlin.aStudent.repository.MessageRepoInterface;
 import de.htw_berlin.aStudent.repository.TopicRepoInterface;
 import de.htw_berlin.aStudent.repository.UserRepoInterface;
+import de.htw_berlin.aStudent.service.AnApplicationService;
 import de.htw_berlin.aStudent.service.MessageService;
 import de.htw_berlin.aStudent.service.TopicService;
 import de.htw_berlin.aStudent.service.UserService;
@@ -14,22 +15,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 //import de.htw_berlin.aStudent.service.AnApplicationService;
 
 import javax.persistence.NoResultException;
+
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ShortMessageServiceImpl implements ShortMessageService {
 
-    @Autowired
+//    @Autowired
     UserService usrService;
 
-    @Autowired
+//    @Autowired
     TopicService topicService;
 
-    @Autowired
+//    @Autowired
     MessageService msgService;
         
-    //@Autowired
-    //AnApplicationService anApplicationService;
+    @Autowired
+    AnApplicationService anApplicationService;
 
     public ShortMessageServiceImpl(UserRepoInterface userRepo, TopicRepoInterface topicRepo, MessageRepoInterface messageRepo) {
         this.usrService = new UserService(userRepo);
@@ -76,7 +79,7 @@ public class ShortMessageServiceImpl implements ShortMessageService {
         Message m = msgService.findById(messageId);
 
         if (m.getUser().getName().equals(userName)) {
-            msgService.deleteMessage(m.getMessageId());
+            msgService.deleteMessage(messageId);
         } else {
             throw new AuthorizationException("Sie sind nicht der Erzeuger!");
         }
@@ -88,7 +91,7 @@ public class ShortMessageServiceImpl implements ShortMessageService {
 
         if (userName == null || topic == null) {
             throw new NullPointerException();
-        } else if (!usrService.userExits(userName) || !topicService.topicExits(topic) || topic.length() < 2 || topic.length() > 70) {
+        } else if (!usrService.userExits(userName) || topicService.topicExits(topic) || topic.length() < 2 || topic.length() > 70) {
             throw new IllegalArgumentException();
         }
         topicService.createTopic(userName, topic);
@@ -144,7 +147,7 @@ public class ShortMessageServiceImpl implements ShortMessageService {
     @Override
     public void deleteUser(String userName) {
 
-        if (usrService.userExits(userName)) {
+        if (!usrService.userExits(userName)) {
             throw new IllegalArgumentException();
         }
         usrService.deleteUser(userName);
