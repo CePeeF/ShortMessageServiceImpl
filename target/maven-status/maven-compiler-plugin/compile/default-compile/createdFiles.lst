@@ -1,3 +1,5 @@
+de\htw_berlin\aStudent\repository\MockUserRepo.class
+de\htw_berlin\aStudent\repository\MessageRepoInterface.class
 de\htw_berlin\f4\ai\kbe\kurznachrichten\ShortMessageServiceImpl.class
 de\htw_berlin\f4\ai\kbe\appconfig\SmsJpaConfig.class
 de\htw_berlin\aStudent\service\MessageService.class
@@ -8,7 +10,11 @@ de\htw_berlin\f4\ai\kbe\appconfig\AppConfig.class
 de\htw_berlin\aStudent\service\AnApplicationService.class
 de\htw_berlin\aStudent\service\TopicService.class
 de\htw_berlin\aStudent\repository\UserRepo.class
+de\htw_berlin\aStudent\repository\MockMessageRepo.class
+de\htw_berlin\aStudent\repository\TopicRepoInterface.class
+de\htw_berlin\aStudent\repository\UserRepoInterface.class
 de\htw_berlin\aStudent\repository\TopicRepo.class
 de\htw_berlin\aStudent\service\AnApplicationServiceImpl.class
 de\htw_berlin\aStudent\model\MessageE.class
 de\htw_berlin\aStudent\repository\MessageRepo.class
+de\htw_berlin\aStudent\repository\MockTopicRepo.class

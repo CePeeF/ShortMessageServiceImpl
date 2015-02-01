@@ -1,7 +1,11 @@
 E:\Java\KBEbeleg2\ShortMessageServiceImpl\src\main\java\de\htw_berlin\aStudent\service\TopicService.java
 E:\Java\KBEbeleg2\ShortMessageServiceImpl\src\main\java\de\htw_berlin\f4\ai\kbe\appconfig\SmsJpaConfig.java
+E:\Java\KBEbeleg2\ShortMessageServiceImpl\src\main\java\de\htw_berlin\aStudent\repository\MockTopicRepo.java
 E:\Java\KBEbeleg2\ShortMessageServiceImpl\src\main\java\de\htw_berlin\aStudent\repository\UserRepo.java
+E:\Java\KBEbeleg2\ShortMessageServiceImpl\src\main\java\de\htw_berlin\aStudent\repository\MessageRepoInterface.java
 E:\Java\KBEbeleg2\ShortMessageServiceImpl\src\main\java\de\htw_berlin\aStudent\model\MessageE.java
+E:\Java\KBEbeleg2\ShortMessageServiceImpl\src\main\java\de\htw_berlin\aStudent\repository\TopicRepoInterface.java
+E:\Java\KBEbeleg2\ShortMessageServiceImpl\src\main\java\de\htw_berlin\aStudent\repository\MockMessageRepo.java
 E:\Java\KBEbeleg2\ShortMessageServiceImpl\src\main\java\de\htw_berlin\aStudent\service\UserService.java
 E:\Java\KBEbeleg2\ShortMessageServiceImpl\src\main\java\de\htw_berlin\aStudent\repository\MessageRepo.java
 E:\Java\KBEbeleg2\ShortMessageServiceImpl\src\main\java\de\htw_berlin\f4\ai\kbe\kurznachrichten\ShortMessageServiceImpl.java
@@ -9,6 +13,8 @@ E:\Java\KBEbeleg2\ShortMessageServiceImpl\src\main\java\de\htw_berlin\aStudent\m
 E:\Java\KBEbeleg2\ShortMessageServiceImpl\src\main\java\de\htw_berlin\aStudent\service\MessageService.java
 E:\Java\KBEbeleg2\ShortMessageServiceImpl\src\main\java\de\htw_berlin\aStudent\service\AnApplicationService.java
 E:\Java\KBEbeleg2\ShortMessageServiceImpl\src\main\java\de\htw_berlin\aStudent\model\UserE.java
+E:\Java\KBEbeleg2\ShortMessageServiceImpl\src\main\java\de\htw_berlin\aStudent\repository\MockUserRepo.java
 E:\Java\KBEbeleg2\ShortMessageServiceImpl\src\main\java\de\htw_berlin\aStudent\repository\TopicRepo.java
+E:\Java\KBEbeleg2\ShortMessageServiceImpl\src\main\java\de\htw_berlin\aStudent\repository\UserRepoInterface.java
 E:\Java\KBEbeleg2\ShortMessageServiceImpl\src\main\java\de\htw_berlin\f4\ai\kbe\appconfig\AppConfig.java
 E:\Java\KBEbeleg2\ShortMessageServiceImpl\src\main\java\de\htw_berlin\aStudent\service\AnApplicationServiceImpl.java
